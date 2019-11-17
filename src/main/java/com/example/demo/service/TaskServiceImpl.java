@@ -1,22 +1,28 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.TaskRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.entity.Task;
+import com.example.demo.exception.SubscriptionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
+    private static final String SECRET = DigestUtils.md5DigestAsHex(("secret".getBytes()));
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -40,9 +46,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task setState(Long id, boolean state) {
-
-        Task currentTask = taskRepository.findById(id).get();
+    public Task setState(Long taskId, boolean state) {
+        Task currentTask = taskRepository.findById(taskId).get();
         currentTask.setDone(state);
         return taskRepository.save(currentTask);
     }
@@ -55,7 +60,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllUserTasks(Long id) {
-        return taskRepository.findAllTasksByUserId(id);
+    public List<Task> getAllUserTasks(Long userId) {
+        return taskRepository.findAllTasksByUserId(userId);
+    }
+
+    @Override
+    public boolean upload(MultipartFile file, Long taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        checkSubscription(task.getUserId());
+        task.setFile(file.getName());
+        return true;
+    }
+
+    private void checkSubscription(Long userId) {
+         if(!userRepository.findById(userId).get().getSubscription().equals(SECRET))
+             throw new SubscriptionException("This feature is only for subscribers!");
     }
 }

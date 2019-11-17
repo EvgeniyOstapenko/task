@@ -8,6 +8,7 @@ import com.example.demo.exception.WrongPasswordException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String SECRET = DigestUtils.md5Hex("secret");
     private final UserRepository userRepository;
-    private final String KEY = "secret";
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User subscribe(Long userId) {
         User userFromDb = userRepository.findById(userId).get();
-        userFromDb.setSubscription(DigestUtils.md5Hex(KEY));
+        userFromDb.setSubscription(SECRET);
         return userFromDb;
     }
 
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
     }
+
 
 //    @Override
 //    public void isAdminAuthority(User user) {

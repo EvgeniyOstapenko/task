@@ -20,6 +20,7 @@ public class Task {
     private boolean isDone;
     @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
+    private String file;
     private Long userId;
 }
 

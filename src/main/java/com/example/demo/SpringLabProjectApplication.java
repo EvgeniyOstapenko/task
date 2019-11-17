@@ -42,9 +42,9 @@ public class SpringLabProjectApplication {
 
 
             // save a few customers
-            taskRepository.save(new Task(1L, "dfg", false, TaskPriority.MEDIUM, 1L));
-            taskRepository.save(new Task(2L, "dfg", false, TaskPriority.MEDIUM, 2L));
-            taskRepository.save(new Task(3L, "dfg", false, TaskPriority.MEDIUM, 2L));
+            taskRepository.save(new Task(1L, "dfg", false, TaskPriority.MEDIUM,"", 1L));
+            taskRepository.save(new Task(2L, "dfg", false, TaskPriority.MEDIUM,"", 2L));
+            taskRepository.save(new Task(3L, "dfg", false, TaskPriority.MEDIUM,"", 2L));
 
 
             // fetch all customers

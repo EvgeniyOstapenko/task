@@ -5,6 +5,7 @@ import com.example.demo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,13 +39,13 @@ public class TaskController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/markCompleted")
+    @PutMapping("/{id}/completed")
     public Task markTaskComplete(@PathVariable Long id) {
         return taskService.setState(id, true);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/markNotCompleted")
+    @PutMapping("/{id}/not_completed")
     public Task markTaskNotComplete(@PathVariable Long id) {
         return taskService.setState(id, false);
     }
@@ -53,6 +54,11 @@ public class TaskController {
     @GetMapping("/sort")
     public List<Task> getSortedTasks() {
         return taskService.getSortedTasks();
+    }
+
+    @PostMapping("/{taskId}/upload")
+    public boolean uploadFile(@PathVariable Long taskId, @RequestParam("file") MultipartFile file) {
+        return taskService.upload(file, taskId);
     }
 
 }
