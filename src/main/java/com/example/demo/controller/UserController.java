@@ -42,6 +42,7 @@ public class UserController {
         return userService.toEnter(user);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
     public List<Task> findAllUserTask(@PathVariable Long userId) {
         return taskService.getAllUserTasks(userId);

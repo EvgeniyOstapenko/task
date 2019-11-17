@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public User subscribe(Long userId) {
         User userFromDb = userRepository.findById(userId).get();
         userFromDb.setSubscription(SECRET);
-        return userFromDb;
+        return userRepository.save(userFromDb);
     }
 
     @Override

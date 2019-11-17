@@ -56,6 +56,7 @@ public class TaskController {
         return taskService.getSortedTasks();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{taskId}/upload")
     public boolean uploadFile(@PathVariable Long taskId, @RequestParam("file") MultipartFile file) {
         return taskService.upload(file, taskId);
