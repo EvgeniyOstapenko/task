@@ -2,10 +2,11 @@ package com.example.demo.service;
 
 import com.example.demo.dao.TaskRepository;
 import com.example.demo.entity.Task;
-import com.example.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,8 +21,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createTask(Task task) {
-        Task createdTask = taskRepository.save(task);
-        return createdTask;
+        return taskRepository.save(task);
     }
 
     @Override
@@ -48,7 +48,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> getSortedTasks() {
+        List<Task> tasks = (List<Task>) taskRepository.findAll();
+        tasks.sort(Comparator.comparing(Task::getTaskPriority));
+        return tasks;
+    }
+
+    @Override
     public List<Task> getAllUserTasks(Long id) {
-        return (List<Task>) taskRepository.findAllTasksByUserId(id);
+        return taskRepository.findAllTasksByUserId(id);
     }
 }

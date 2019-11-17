@@ -38,15 +38,21 @@ public class TaskController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/isCompleted")
+    @PutMapping("/{id}/markCompleted")
     public Task markTaskComplete(@PathVariable Long id) {
         return taskService.setState(id, true);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/isNotCompleted")
+    @PutMapping("/{id}/markNotCompleted")
     public Task markTaskNotComplete(@PathVariable Long id) {
         return taskService.setState(id, false);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/sort")
+    public List<Task> getSortedTasks() {
+        return taskService.getSortedTasks();
     }
 
 }

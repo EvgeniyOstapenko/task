@@ -17,4 +17,5 @@ public interface TaskService {
 
     Task setState(Long id, boolean state);
 
+    List<Task> getSortedTasks();
 }
