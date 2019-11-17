@@ -2,14 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dao.UserRepository;
 import com.example.demo.entity.User;
-import com.example.demo.exception.EmailAlreadyExistException;
+import com.example.demo.exception.EmailExistException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.exception.WrongPasswordException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User toRegister(User currentUser) {
         if (userRepository.getByEmail(currentUser.getEmail()) != null)
-            throw new EmailAlreadyExistException("This email is already in use!");
+            throw new EmailExistException("This email is already in use!");
         return userRepository.save(currentUser);
     }
 
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     private User authorization(User currentUser, User userFromDB) {
         if (userFromDB == null)
-            throw new UserNotFoundException("Unregistered userFromDB!");
+            throw new UserNotFoundException("Unregistered user!");
         else if (!currentUser.getPassword().equals(userFromDB.getPassword()))
             throw new WrongPasswordException("Wrong password!");
         return userFromDB;

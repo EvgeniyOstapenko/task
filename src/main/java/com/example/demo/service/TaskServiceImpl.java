@@ -74,6 +74,6 @@ public class TaskServiceImpl implements TaskService {
 
     private void checkSubscription(Long userId) {
          if(!userRepository.findById(userId).get().getSubscription().equals(SECRET))
-             throw new SubscriptionException("This feature is only for subscribers!");
+             throw new SubscriptionException("The uploading file option is only for subscribers!");
     }
 }
