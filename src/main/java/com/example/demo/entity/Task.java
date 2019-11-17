@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Builder
@@ -16,6 +18,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty
     private String description;
     private boolean isDone;
     @Enumerated(EnumType.STRING)

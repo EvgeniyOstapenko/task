@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.RollbackException;
 import java.sql.SQLException;
 
 @ControllerAdvice
@@ -18,14 +19,14 @@ public class ExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "This email is already in use!")
     @org.springframework.web.bind.annotation.ExceptionHandler(EmailExistException.class)
     public void catchException(EmailExistException ex) {
-        System.out.println(ex.getLocalizedMessage());
+        System.out.println("Database exception \n" + ex.getLocalizedMessage());
     }
 
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "The uploading file option is only for subscribers!")
     @org.springframework.web.bind.annotation.ExceptionHandler(SubscriptionException.class)
     public void catchException(SubscriptionException ex) {
-        System.out.println(ex.getLocalizedMessage());
+        System.out.println("Something wrong:  \n" + ex.getLocalizedMessage());
     }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Database exception")
@@ -34,11 +35,17 @@ public class ExceptionHandler {
         System.out.println("Database exception \n" + ex.getLocalizedMessage());
     }
 
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal error, see in logs!!!")
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
-    public void catchException(Exception ex) {
-        System.out.println("Something wrong:  \n" + ex.getLocalizedMessage());
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Validation violation")
+    @org.springframework.web.bind.annotation.ExceptionHandler(RollbackException.class)
+    public void catchException(RollbackException ex) {
+        System.out.println("Validation not correct \n" + ex.getLocalizedMessage());
     }
+
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal error, see in logs!!!")
+//    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+//    public void catchException(Exception ex) {
+//        System.out.println("Something wrong:  \n" + ex.getLocalizedMessage());
+//    }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Unregistered user!")
     @org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
