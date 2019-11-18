@@ -16,5 +16,4 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-//    void isAdminAuthority(User user);
 }

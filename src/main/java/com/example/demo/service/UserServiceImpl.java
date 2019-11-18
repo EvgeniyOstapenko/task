@@ -16,10 +16,12 @@ public class UserServiceImpl implements UserService {
 
     private static final String SECRET = DigestUtils.md5Hex("secret");
     private final UserRepository userRepository;
+    private final SecurityService securityService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, SecurityService securityService) {
         this.userRepository = userRepository;
+        this.securityService = securityService;
     }
 
     @Override
@@ -60,22 +62,7 @@ public class UserServiceImpl implements UserService {
         return (List<User>) userRepository.findAll();
     }
 
-
-//    @Override
-//    public void isAdminAuthority(User user) {
-//        SecurityService service = getSecurityService();
-//        try {
-//            service.isValidUserRole(user.getUserRole());
-//            System.out.println("Welcome admin.");
-//        } catch (UnauthorizedAccessAttemptException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private SecurityService getSecurityService() {
-//        ClassPathXmlApplicationContext xmlContext =
-//                new ClassPathXmlApplicationContext("spring-config.xml");
-//        xmlContext.refresh();
-//        return xmlContext.getBean(SecurityService.class);
-//    }
+    public void isAdminAuthority(User user) {
+        securityService.isValidUserRole(user.getUserRole());
+    }
 }
