@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         return updatedUser;
     }
 
-    public void isAdminAuthority(Long userId) {
+    private void isAdminAuthority(Long userId) {
         securityService.isValidUserRole(userRepository.findById(userId).get().getUserRole());
     }
 }
