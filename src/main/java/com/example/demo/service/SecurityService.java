@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 class SecurityService {
 
     void isValidUserRole(UserRole userRole) {
-
         if (!UserRole.ADMIN.equals(userRole))
             throw new UnauthorizedAccessException("This is ADMIN service!");
     }

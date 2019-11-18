@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Task;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserRole;
 import com.example.demo.service.TaskService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,12 @@ public class UserController {
     @PutMapping("/{userId}")
     public User getSubscription(@PathVariable Long userId) {
         return userService.subscribe(userId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{adminId}/{userId}/{userRole}")
+    public User changeUserRole(@PathVariable Long adminId, @PathVariable Long userId, @PathVariable UserRole userRole){
+        return userService.changeRole(adminId, userId, userRole);
     }
 
 

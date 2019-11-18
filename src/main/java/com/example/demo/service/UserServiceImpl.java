@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.UserRepository;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserRole;
 import com.example.demo.exception.EmailExistException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.exception.WrongPasswordException;
@@ -62,7 +63,15 @@ public class UserServiceImpl implements UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public void isAdminAuthority(User user) {
-        securityService.isValidUserRole(user.getUserRole());
+    @Override
+    public User changeRole(Long adminId, Long userId, UserRole userRole) {
+        isAdminAuthority(adminId);
+        User updatedUser = userRepository.findById(userId).get();
+        updatedUser.setUserRole(userRole);
+        return updatedUser;
+    }
+
+    public void isAdminAuthority(Long userId) {
+        securityService.isValidUserRole(userRepository.findById(userId).get().getUserRole());
     }
 }
